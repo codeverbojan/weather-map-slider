@@ -15,7 +15,6 @@ A modern interactive weather map built with Leaflet, GSAP, and vanilla JavaScrip
 ## Tech Stack
 
 - Leaflet.js
-- GSAP 3
 - Vanilla JS (no framework)
 - SCSS (compiled using Vite or Webpack)
 - WordPress backend (AJAX endpoints)

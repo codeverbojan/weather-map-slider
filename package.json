@@ -12,7 +12,6 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "gsap": "^3.13.0",
     "sass": "^1.89.2",
     "vite": "^7.0.4"
   }

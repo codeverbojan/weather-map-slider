@@ -22,7 +22,16 @@ body {
   position: relative;
   overflow: hidden;
 }
+#weather-header,
+.gradient-overlay,
+#weather-sidebar {
+  transition: all 0.8s ease;
+  will-change: transform, opacity;
+}
 
+#weather-sidebar {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
 // Map section
 .weather-map-section {
   position: absolute;
@@ -33,7 +42,9 @@ body {
   display: flex;
   overflow: hidden;
 }
-
+.cursor-pointer{
+	cursor: pointer;
+}
 // Header section
 .weather-header {
   position: relative;

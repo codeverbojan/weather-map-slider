@@ -15,6 +15,8 @@ class Weather_Plugin {
         (new Weather_Settings())->init();
         (new Weather_Station_ACF())->init();
         (new Weather_Cron())->init();
+        
+         add_filter('display_post_states', [__CLASS__, 'add_map_page_label'], 10, 2);
     }
 
     public static function on_activate() {
@@ -36,4 +38,10 @@ class Weather_Plugin {
 	        update_post_meta($existing_page->ID, '_weather_map_page', true);
 	    }
     }
+    public static function add_map_page_label($states, $post) {
+	    if (get_post_meta($post->ID, '_weather_map_page', true)) {
+	        $states[] = 'Map Page';
+	    }
+	    return $states;
+	}
 }

@@ -1,7 +1,6 @@
-import gsap from 'gsap';
 import '../scss/style.scss';
 
-document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
   const map = L.map('weather-map').setView([41.0, 21.3], 7);
   
   // disable scroll if you want users to go to the first slide
@@ -10,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
   
   const sidebar = document.getElementById('weather-sidebar');
+  
+  sidebar.style.transform = 'translateX(-300px)';
+  sidebar.style.opacity = '0';
+  sidebar.style.pointerEvents = 'none';
+  
   const overlay = document.querySelector('.gradient-overlay');
   const slider = document.getElementById('weather-header');
   const infoBox = document.querySelector('.station-info');
@@ -40,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
 
   // Sidebar hidden on load
-  gsap.set(sidebar, { x: -300, opacity: 0, pointerEvents: 'none' });
   
   let touchStartY = 0;
 	let touchEndY = 0;
@@ -83,56 +86,46 @@ document.addEventListener('DOMContentLoaded', () => {
   function animateToMap() {
 	  isAnimating = true;
 	
-	  const tl = gsap.timeline({
-	    onComplete: () => {
-	      isAnimating = false;
+	  slider.style.transform = 'translateY(-100vh)';
+	  overlay.style.opacity = '0';
 	
-	      if (currentStation || lastWeatherData || pendingSidebarReveal) {
-	        showSidebar();
-	        pendingSidebarReveal = false;
-	      }
+	  setTimeout(() => {
+	    isAnimating = false;
+	
+	    if (currentStation || lastWeatherData || pendingSidebarReveal) {
+	      showSidebar();
+	      pendingSidebarReveal = false;
 	    }
-	  });
-	
-	  tl.to(slider, { y: '-100vh', duration: 0.8, ease: 'expo.out' }, 0)
-	    .to(overlay, { opacity: 0, duration: 1.5, ease: 'expo.out' }, 0);
+	  }, 800); // match transition time
 	}
 
-  function animateToTop() {
+	  function animateToTop() {
 	  isAnimating = true;
 	
-	  const tl = gsap.timeline({
-	    onComplete: () => {
-	      isAnimating = false;
-	      pendingSidebarReveal = true; // allow reveal on next scroll down
-	    }
-	  });
+	  slider.style.transform = 'translateY(0vh)';
+	  overlay.style.opacity = '1';
+	  sidebar.style.transform = 'translateX(-300px)';
+	  sidebar.style.opacity = '0';
+	  sidebar.style.pointerEvents = 'none';
 	
-	  tl.to(slider, { y: '0vh', duration: 0.8, ease: 'expo.out' }, 0)
-	    .to(overlay, { opacity: 1, duration: 0.8, ease: 'expo.out' }, 0)
-	    .to(sidebar, { x: '-100%', duration: 0.3, ease: 'expo.out' }, 0);
+	  setTimeout(() => {
+	    isAnimating = false;
+	    pendingSidebarReveal = true;
+	  }, 800);
 	}
 
   function showSidebar() {
-    gsap.to(sidebar, {
-      x: 0,
-      opacity: 1,
-      pointerEvents: 'auto',
-      duration: 0.3,
-      ease: 'expo.out'
-    });
-  }
+	  sidebar.style.transform = 'translateX(0)';
+	  sidebar.style.opacity = '1';
+	  sidebar.style.pointerEvents = 'auto';
+	}
 
   // Hide sidebar on map drag/zoom
   map.on('zoomstart dragstart', () => {
-    gsap.to(sidebar, {
-      x: -300,
-      opacity: 0,
-      pointerEvents: 'none',
-      duration: 0.3,
-      ease: 'expo.out'
-    });
-  });
+  sidebar.style.transform = 'translateX(-300px)';
+  sidebar.style.opacity = '0';
+  sidebar.style.pointerEvents = 'none';
+});
 
   // Load map tiles
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -236,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	  `;
 	
 	  const emptyIcon = `
-	    <svg width="19" height="25" viewBox="0 0 19 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+	    <svg class="cursor-pointer" width="19" height="25" viewBox="0 0 19 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.53125 2.25L1.8125 0.96875H17.1875L18.4688 2.25V24.9985L9.5 19.6837L0.53125 24.9985V2.25ZM3.09375 3.53125V20.5015L9.5 16.7051L15.9062 20.5015V3.53125H3.09375Z" fill="#EEEEEE"/>
 </svg>
 
