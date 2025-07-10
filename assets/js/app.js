@@ -41,6 +41,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Sidebar hidden on load
   gsap.set(sidebar, { x: -300, opacity: 0, pointerEvents: 'none' });
+  
+  let touchStartY = 0;
+	let touchEndY = 0;
+	
+	window.addEventListener('touchstart', (e) => {
+	  touchStartY = e.changedTouches[0].screenY;
+	}, { passive: true });
+	
+	window.addEventListener('touchend', (e) => {
+	  touchEndY = e.changedTouches[0].screenY;
+	  handleSwipe();
+	}, { passive: true });
+	
+	function handleSwipe() {
+	  if (isAnimating) return;
+	  const diff = touchStartY - touchEndY;
+	
+	  if (diff > 50 && scrollY === 0) {
+	    scrollY = 1;
+	    animateToMap();
+	  } else if (diff < -50 && scrollY === 1) {
+	    scrollY = 0;
+	    animateToTop();
+	  }
+	}
 
   // Custom scroll behavior using GSAP
   window.addEventListener('wheel', (e) => {
