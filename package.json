@@ -1,0 +1,19 @@
+{
+  "name": "weather-map-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "vite.config.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "sass": "^1.89.2",
+    "vite": "^7.0.4"
+  }
+}
