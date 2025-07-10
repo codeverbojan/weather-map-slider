@@ -140,10 +140,18 @@ import '../scss/style.scss';
 	
 	  stationsList = data;
 	
-	  data.forEach(station => {
-	    const marker = L.marker([station.lat, station.lng]).addTo(map);
-	    marker.on('click', () => activateStation(station));
-	  });
+	   data.forEach(station => {
+		  const marker = L.marker([station.lat, station.lng], {
+		    icon: L.divIcon({
+		      className: 'weather-marker',
+		      html: '<div class="marker-dot"></div>',
+		      iconSize: [20, 20],
+		      iconAnchor: [10, 10],
+		    })
+		  }).addTo(map);
+		
+		  marker.on('click', () => activateStation(station));
+		});
 	
 	  // Add My Locations link ONLY if user has bookmarks
 	  const bookmarks = (JSON.parse(localStorage.getItem('bookmarkedStations') || '[]')).map(String);

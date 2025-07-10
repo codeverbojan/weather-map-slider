@@ -158,6 +158,19 @@ body {
     background: #2980b9;
   }
 }
+.weather-marker .marker-dot {
+  width: 16px;
+  height: 16px;
+  background: #f44336;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 0 0 2px white;
+}
+
+.weather-marker:hover .marker-dot {
+  transform: scale(1.4);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
 
 
 .unit-toggle {
