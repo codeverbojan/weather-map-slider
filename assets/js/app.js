@@ -1,7 +1,7 @@
 import '../scss/style.scss';
 
   document.addEventListener('DOMContentLoaded', () => {
-  const map = L.map('weather-map').setView([41.0, 21.3], 7);
+  const map = L.map('weather-map');
   
   // disable scroll if you want users to go to the first slide
   //map.scrollWheelZoom.disable();
@@ -139,9 +139,11 @@ import '../scss/style.scss';
 	  if (!success || !data) return;
 	
 	  stationsList = data;
-	
+	  	const bounds = L.latLngBounds([]);
 	   data.forEach(station => {
-		  const marker = L.marker([station.lat, station.lng], {
+		  const latlng = [station.lat, station.lng];
+		
+		  const marker = L.marker(latlng, {
 		    icon: L.divIcon({
 		      className: 'weather-marker',
 		      html: '<div class="marker-dot"></div>',
@@ -150,8 +152,19 @@ import '../scss/style.scss';
 		    })
 		  }).addTo(map);
 		
+		  bounds.extend(latlng);
 		  marker.on('click', () => activateStation(station));
 		});
+		
+		// After adding all markers
+		if (data.length > 0) {
+		  map.fitBounds(bounds, {
+		    padding: [30, 30],
+		    maxZoom: 10
+		  });
+		} else {
+		  map.setView([41.0, 21.3], 7); // fallback center
+		}
 	
 	  // Add My Locations link ONLY if user has bookmarks
 	  const bookmarks = (JSON.parse(localStorage.getItem('bookmarkedStations') || '[]')).map(String);
