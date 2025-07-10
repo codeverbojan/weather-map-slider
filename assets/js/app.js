@@ -1,7 +1,10 @@
 import '../scss/style.scss';
 
   document.addEventListener('DOMContentLoaded', () => {
-  const map = L.map('weather-map');
+  const mapContainer = document.getElementById('weather-map');
+  if (!mapContainer) return;
+
+  const map = L.map(mapContainer);
   
   // disable scroll if you want users to go to the first slide
   //map.scrollWheelZoom.disable();
@@ -70,7 +73,7 @@ import '../scss/style.scss';
 	  }
 	}
 
-  // Custom scroll behavior using GSAP
+  // Custom scroll behavior using native JS transitions
   window.addEventListener('wheel', (e) => {
     if (isAnimating) return;
 
@@ -166,8 +169,7 @@ import '../scss/style.scss';
 		  map.setView([41.0, 21.3], 7); // fallback center
 		}
 	
-	  // Add My Locations link ONLY if user has bookmarks
-	  const bookmarks = (JSON.parse(localStorage.getItem('bookmarkedStations') || '[]')).map(String);
+	  
 	  
 	
 	  // Load station from hash if present
@@ -190,7 +192,10 @@ import '../scss/style.scss';
 	    const nearest = findClosestStation(e.latlng, stationsList);
 	    if (nearest) activateStation(nearest);
 	  });
-	});
+	})
+	.catch(err => {
+	    console.error('Failed to load weather stations:', err);
+	  });
 	
   function activateStation(station, forceReload = false) {
 	  const sidebarIsHidden = sidebar.style.opacity === '0' || sidebar.style.pointerEvents === 'none';
@@ -338,6 +343,7 @@ import '../scss/style.scss';
 		    } catch (e) {
 		      return; // skip invalid entries
 		    }
+		    if (!weatherData.main || !weatherData.weather) return;
 		
 		    const name = weatherData.name || 'Unknown Station';
 		    const condition = weatherData.weather?.[0]?.main || 'N/A';
