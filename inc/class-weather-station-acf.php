@@ -86,7 +86,7 @@ class Weather_Station_ACF {
         wp_enqueue_script('leaflet', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
         wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
 		
-        wp_enqueue_script('weather-location-script', plugin_dir_url(__DIR__) . 'dist/js/weather-location.js', ['jquery'], null, true);
+        wp_enqueue_script('weather-location-script', plugin_dir_url(__DIR__) . 'admin/js/weather-location.js', ['jquery'], null, true);
         wp_localize_script('weather-location-script', 'WeatherMapData', [
             'openweatherKey' => Weather_Settings::get_openweather_key(),
             'ajaxUrl' => admin_url('admin-ajax.php'),
