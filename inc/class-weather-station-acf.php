@@ -7,6 +7,9 @@ class Weather_Station_ACF {
         add_action('acf/input/admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
         add_action('wp_ajax_fetch_weather_data', [$this, 'ajax_fetch_weather_data']);
         add_action('acf/save_post', [$this, 'maybe_fetch_weather_on_acf_save'], 20);
+        
+        // Add admin notice if API key is missing
+		add_action('admin_notices', [$this, 'maybe_show_missing_api_key_notice']);
     }
 
     public function register_fields() {
@@ -126,6 +129,22 @@ class Weather_Station_ACF {
 	    $weather = $this->fetch_weather_data($lat, $lng);
 	    if ($weather) {
 	        update_field('weather_data', json_encode($weather, JSON_PRETTY_PRINT), $post_id);
+	    }
+	}
+	public function maybe_show_missing_api_key_notice() {
+	    if (!current_user_can('manage_options')) return;
+	
+	    $screen = get_current_screen();
+	    if ($screen && $screen->post_type !== 'weather_station') return;
+	
+	    $apiKey = Weather_Settings::get_openweather_key();
+	    if (!$apiKey) {
+	        $settings_url = admin_url('edit.php?post_type=weather_station&page=weather_map_plugin_settings');
+	
+	        echo '<div class="notice notice-error is-dismissible">
+	            <p><strong>Weather Map Plugin:</strong> OpenWeatherMap API key is missing. 
+	            <a href="' . esc_url($settings_url) . '">Click here to set your API key</a>.</p>
+	        </div>';
 	    }
 	}
 
