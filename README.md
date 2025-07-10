@@ -2,6 +2,8 @@
 
 A modern interactive weather map built with Leaflet, GSAP, and vanilla JavaScript. The UI includes scroll-based transitions, temperature unit toggling, sidebar animations, and localStorage-based bookmarks.
 
+> **Note:** Previous versions used GSAP for animations, but all animations have now been replaced with lightweight, performant CSS transitions and JavaScript.
+
 ## Features
 
 - 🌤️ Clickable weather stations with real-time OpenWeatherMap data
